@@ -458,6 +458,9 @@ boolean canUseSweatpants();
 int getSweat();
 void sweatpantsPreAdventure();
 void utilizeStillsuit();
+boolean auto_haveAutumnaton();
+string [int] current_autumnaton_upgrades();
+int autumnaton_turns_left();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash

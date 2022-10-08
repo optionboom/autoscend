@@ -328,3 +328,19 @@ void utilizeStillsuit() {
 		handleFamiliar(get_property("auto_100familiar").to_familiar());	//just make extra sure this didnt break 100 familiar runs but familiar should not have been swapped
 	}
 }
+
+boolean auto_haveAutumnaton()
+{
+	// ensure we not only own one but it's in allowed in path and also in inventory for us to do stuff with.
+	return (get_property("hasAutumnaton").to_boolean() && auto_is_valid($item[autumn-aton]) && available_amount($item[autumn-aton]) > 0);
+}
+
+string [int] current_autumnaton_upgrades()
+{
+	return split_string(get_property("autumnatonUpgrades"), ",");
+}
+
+int autumnaton_turns_left()
+{
+	return (get_property("autumnatonQuestTurn").to_int() - total_turns_played());
+}

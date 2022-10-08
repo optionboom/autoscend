@@ -1,4 +1,4 @@
-since r26812;	// allow specifying "github" dependencies
+since r26822;	// autumn-aton support
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
