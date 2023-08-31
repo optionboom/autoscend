@@ -398,3 +398,13 @@ void auto_useBlackMonolith()
 	// use monolith
 	visit_url("campground.php?action=monolith");
 }
+
+boolean auto_haveAutumnScepter()
+{
+	static item scepter = wrap_item($item[August Scepter]);
+	if(auto_is_valid(scepter) && (item_amount(scepter) > 0 || have_equipped(scepter)))
+	{
+		return true;
+	}
+	return false;
+}
