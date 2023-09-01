@@ -576,6 +576,7 @@ boolean auto_pre_adventure()
 	horsePreAdventure();
 	auto_snapperPreAdventure(place);
 	sweatpantsPreAdventure();
+	augustScepterPreAdventure();
 
 	boolean mayNeedItem = true;
 	if (burningDelay || forcedNonCombat) {

@@ -408,3 +408,26 @@ boolean auto_haveAutumnScepter()
 	}
 	return false;
 }
+
+
+void augustScepterPreAdventure()
+{
+	if (!auto_haveAutumnScepter()) {
+		return;
+	}
+
+	if (in_small()) {
+		return; // small can't clean organs
+	}
+
+	if (get_property("_augSkillsCast").to_int() >= 5) {
+		return;
+	}
+
+	if (!get_property("_aug16Cast").to_boolean() && my_fullnes() > 0) {
+		use_skill($skill["Aug. 16th: Roller Coaster Day!"])
+	}
+
+	//if cur zone is valid mountain, cast aug 1 for free adv and meat?
+
+}
