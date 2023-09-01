@@ -424,7 +424,7 @@ void augustScepterPreAdventure()
 		return;
 	}
 
-	if (!get_property("_aug16Cast").to_boolean() && my_fullnexs() > 0) {
+	if (!get_property("_aug16Cast").to_boolean() && my_fullness() > 0) {
 		use_skill($skill["Aug. 16th: Roller Coaster Day!"])
 	}
 
