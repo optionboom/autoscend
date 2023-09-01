@@ -399,7 +399,7 @@ void auto_useBlackMonolith()
 	visit_url("campground.php?action=monolith");
 }
 
-boolean auto_haveAutumnScepter()
+boolean auto_haveAugustScepter()
 {
 	static item scepter = wrap_item($item[August Scepter]);
 	if(auto_is_valid(scepter) && (item_amount(scepter) > 0 || have_equipped(scepter)))
@@ -412,7 +412,7 @@ boolean auto_haveAutumnScepter()
 
 void augustScepterPreAdventure()
 {
-	if (!auto_haveAutumnScepter()) {
+	if (!auto_haveAugustScepter()) {
 		return;
 	}
 
@@ -424,7 +424,7 @@ void augustScepterPreAdventure()
 		return;
 	}
 
-	if (!get_property("_aug16Cast").to_boolean() && my_fullnes() > 0) {
+	if (!get_property("_aug16Cast").to_boolean() && my_fullness() > 0) {
 		use_skill($skill["Aug. 16th: Roller Coaster Day!"])
 	}
 

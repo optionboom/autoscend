@@ -515,6 +515,8 @@ int remainingCatalogCredits();
 boolean auto_haveIdolMicrophone();
 void auto_buyFrom2002MrStore();
 void auto_useBlackMonolith();
+boolean auto_haveAugustScepter();
+void augustScepterPreAdventure();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
