@@ -657,6 +657,12 @@ string banisherCombatString(monster enemy, location loc, boolean inCombat)
 	{
 		return "skill " + $skill[Snokebomb];
 	}
+
+	//This seems weird but I think it's okay
+	if((inCombat ? have_equipped($item[Staff of the Standalone Cheese]) : possessEquipment($item[Staff of the Standalone Cheese])) && (get_property("_jiggleCheese").to_int() < 5)) 
+	{
+		return "jiggle";
+	}
 	
 	//[Nanorhino] familiar specific banish. fairly low priority as it consumes 40 to 50 adv worth of a decent buff.
 	if(canUse($skill[Unleash Nanites]) && have_effect($effect[Nanobrawny]) >= 40)

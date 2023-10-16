@@ -890,6 +890,10 @@ boolean adjustForBanish(string combat_string)
 	{
 		return autoEquip($item[Kremlin\'s Greatest Briefcase]);
 	}
+	if(combat_string == "jiggle" && possessEquipment($item[Staff of the Standalone Cheese])) //future-proofing in case another chefstaff can banish
+	{
+		return autoEquip($item[Staff of the Standalone Cheese]);
+	}
 	if(combat_string == "skill " + $skill[Beancannon])
 	{
 		foreach beancan in $items[Frigid Northern Beans, Heimz Fortified Kidney Beans, Hellfire Spicy Beans, Mixed Garbanzos and Chickpeas, Pork 'n' Pork 'n' Pork 'n' Beans, Shrub's Premium Baked Beans, Tesla's Electroplated Beans, Trader Olaf's Exotic Stinkbeans, World's Blackest-Eyed Peas]
