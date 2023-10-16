@@ -463,6 +463,10 @@ int auto_CombatLoversLocketCharges();
 boolean auto_haveReminiscedMonster(monster mon);
 boolean auto_monsterInLocket(monster mon);
 boolean auto_fightLocketMonster(monster mon, boolean speculative);
+boolean auto_haveGreyGoose();
+int gooseExpectedDrones();
+boolean dronesOut();
+void prioritizeGoose();
 boolean canUseCleaver();
 void juneCleaverChoiceHandler(int choice);
 boolean canUseSweatpants();
@@ -515,6 +519,11 @@ int remainingCatalogCredits();
 boolean auto_haveIdolMicrophone();
 void auto_buyFrom2002MrStore();
 void auto_useBlackMonolith();
+boolean auto_haveAugustScepter();
+void auto_scepterSkills();
+void auto_lostStomach();
+boolean auto_haveJillOfAllTrades();
+void auto_handleJillOfAllTrades();
 
 ########################################################################################################
 //Defined in autoscend/paths/actually_ed_the_undying.ash
@@ -618,9 +627,6 @@ boolean inAftercore();
 boolean inPostRonin();
 void casualCheck();
 boolean L8_slopeCasual();
-void acquireFamiliarRagamuffinImp();
-void acquireFamiliarsCasual();
-boolean LX_acquireFamiliarLeprechaun();
 boolean LM_canInteract();
 
 ########################################################################################################
@@ -853,6 +859,7 @@ boolean qt_FamiliarSwap (familiar fam);
 boolean in_small();
 void small_initializeSettings();
 void auto_SmallPulls();
+boolean auto_smallCampgroundGear();
 
 ########################################################################################################
 //Defined in autoscend/paths/the_source.ash
@@ -1163,6 +1170,7 @@ boolean LX_dolphinKingMap();
 boolean LX_meatMaid();
 item LX_getDesiredWorkshed();
 boolean LX_setWorkshed();
+boolean LX_dronesOut();
 
 ########################################################################################################
 //Defined in autoscend/quests/optional.ash
@@ -1214,9 +1222,7 @@ boolean pulverizeThing(item it);
 boolean buyableMaintain(item toMaintain, int howMany);
 boolean buyableMaintain(item toMaintain, int howMany, int meatMin);
 boolean buyableMaintain(item toMaintain, int howMany, int meatMin, boolean condition);
-boolean buy_item(item it, int quantity, int maxprice);
-boolean buyUpTo(int num, item it);
-boolean buyUpTo(int num, item it, int maxprice);
+boolean auto_buyUpTo(int num, item it);
 float npcStoreDiscountMulti();
 boolean acquireGumItem(item it);
 boolean acquireTotem();
@@ -1232,6 +1238,10 @@ boolean autoAdv(int num, location loc, string option);		//num is ignored
 boolean autoAdv(int num, location loc);						//num is ignored
 boolean autoAdv(location loc);
 boolean autoAdv(location loc, string option);
+
+boolean autoLuckyAdv(location loc, boolean override);
+boolean autoLuckyAdv(location loc);
+
 boolean autoAdvBypass(int urlGetFlags, string[int] url, location loc, string option);
 boolean autoAdvBypass(string url, location loc);
 boolean autoAdvBypass(string url, location loc, string option);
@@ -1376,6 +1386,7 @@ boolean pathAllowsChangingFamiliar();
 boolean auto_have_familiar(familiar fam);
 boolean canChangeFamiliar();
 boolean canChangeToFamiliar(familiar target);
+familiar findNonRockFamiliarInTerrarium();
 familiar lookupFamiliarDatafile(string type);
 boolean handleFamiliar(string type);
 boolean handleFamiliar(familiar fam);
@@ -1383,11 +1394,6 @@ boolean autoChooseFamiliar(location place);
 boolean haveSpleenFamiliar();
 boolean wantCubeling();
 void preAdvUpdateFamiliar(location place);
-boolean checkTerrarium();
-void getTerrarium();
-boolean hatchFamiliar(familiar adult);
-void hatchList();
-void acquireFamiliars();
 
 ########################################################################################################
 //Defined in autoscend/auto_list.ash
@@ -1650,7 +1656,9 @@ item whatHiMein();
 boolean ovenHandle();
 boolean isGhost(monster mon);
 boolean isProtonGhost(monster mon);
+int cloversAvailable(boolean override);
 int cloversAvailable();
+boolean cloverUsageInit(boolean override);
 boolean cloverUsageInit();
 boolean cloverUsageRestart();
 boolean cloverUsageFinish();
@@ -1666,8 +1674,6 @@ boolean isDesertAvailable();
 boolean inKnollSign();
 boolean inCanadiaSign();
 boolean inGnomeSign();
-boolean allowSoftblockShen();
-boolean setSoftblockShen();
 boolean instakillable(monster mon);
 boolean stunnable(monster mon);
 float combatItemDamageMultiplier();
@@ -1713,7 +1719,7 @@ int doNumberology(string goal, boolean doIt);
 int doNumberology(string goal, boolean doIt, string option);
 boolean auto_have_skill(skill sk);
 boolean have_skills(boolean[skill] array);
-void woods_questStart();
+boolean woods_questStart();
 int howLongBeforeHoloWristDrop();
 boolean hasShieldEquipped();
 boolean careAboutDrops(monster mon);

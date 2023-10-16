@@ -2,6 +2,9 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 {
 	// stage 5 = kill
 	string retval;
+
+	//Unskip stage 4
+	if(get_property("auto_skipStage4").to_boolean()) set_property("auto_skipStage4", false);
 	
 	// Path = Heavy Rains
 	retval = auto_combatHeavyRainsStage5(round, enemy, text);
@@ -614,7 +617,7 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 			costMinor = mp_cost($skill[Beanstorm]);
 		}
 
-		if(canUse($skill[Fan Hammer], false))
+		if(canUse($skill[Fan Hammer], false) && (enemy.physical_resistance < 80))
 		{
 			attackMajor = useSkill($skill[Fan Hammer], false);
 			attackMinor = useSkill($skill[Fan Hammer], false);
@@ -803,7 +806,7 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 		{
 			return useSkill($skill[Thousand-Yard Stare]);
 		}
-		if($monsters[Aquagoblin, Lord Soggyraven, Groar] contains enemy && (my_mp() >= costMajor))
+		if($monsters[Aquagoblin, Lord Soggyraven, Groar, The Big Wisniewski, The Man] contains enemy && (my_mp() >= costMajor))
 		{
 			return attackMajor;
 		}
@@ -940,7 +943,7 @@ string auto_combatDefaultStage5(int round, monster enemy, string text)
 		return attackMajor;
 	}
 
-	if($monsters[Aquagoblin, Lord Soggyraven, Groar] contains enemy && (my_mp() >= costMajor))
+	if($monsters[Aquagoblin, Lord Soggyraven, Groar, The Big Wisniewski, The Man] contains enemy && (my_mp() >= costMajor))
 	{
 		return attackMajor;
 	}

@@ -1,4 +1,4 @@
-since r27557;	// support small path
+since r27637;	// support jill-of-all-trades
 /***
 	autoscend_header.ash must be first import
 	All non-accessory scripts must be imported here
@@ -199,6 +199,7 @@ void initializeSettings() {
 	set_property("auto_doMeatsmith", false);
 	set_property("auto_L8_ninjaAssassinFail", false);
 	set_property("auto_L8_extremeInstead", false);
+	set_property("auto_L9_smutOrcPervert", false);
 	set_property("auto_haveSourceTerminal", false);
 	set_property("auto_hedge", "fast");
 	set_property("auto_hippyInstead", false);
@@ -219,7 +220,6 @@ void initializeSettings() {
 	set_property("auto_pulls", "");
 
 	// Last level during which we ran out of stuff to do without pre-completing some Shen quests.
-	set_property("auto_shenSkipLastLevel", 0); 
 	remove_property("auto_shenZonesTurnsSpent");
 	remove_property("auto_lastShenTurn");
 	
@@ -815,12 +815,12 @@ void initializeDay(int day)
 					//Try to get Antique Accordion early if we possibly can.
 					if(isUnclePAvailable() && ((my_meat() > npc_price($item[Antique Accordion])) && (npc_price($item[Antique Accordion]) != 0)) && !in_glover())
 					{
-						buyUpTo(1, $item[Antique Accordion]);
+						auto_buyUpTo(1, $item[Antique Accordion]);
 					}
 					// Removed "else". In some situations when mafia or supporting scripts are behaving wonky we may completely fail to get an accordion
 					if((isArmoryAvailable()) && (item_amount($item[Antique Accordion]) == 0))
 					{
-						buyUpTo(1, $item[Toy Accordion]);
+						auto_buyUpTo(1, $item[Toy Accordion]);
 					}
 				}
 				acquireTotem();
@@ -895,13 +895,13 @@ void initializeDay(int day)
 			while(acquireHermitItem($item[11-Leaf Clover]));
 			if((item_amount($item[Antique Accordion]) == 0) && (item_amount($item[Aerogel Accordion]) == 0) && isUnclePAvailable() && ((my_meat() > npc_price($item[Antique Accordion])) && (npc_price($item[Antique Accordion]) != 0)) && (auto_predictAccordionTurns() < 10) && !(is_boris() || is_jarlsberg() || is_pete() || isActuallyEd() || in_darkGyffte() || in_plumber() || !in_glover()))
 			{
-				buyUpTo(1, $item[Antique Accordion]);
+				auto_buyUpTo(1, $item[Antique Accordion]);
 			}
 			if(is_boris())
 			{
 				if((item_amount($item[Clancy\'s Crumhorn]) == 0) && (minstrel_instrument() != $item[Clancy\'s Crumhorn]))
 				{
-					buyUpTo(1, $item[Clancy\'s Crumhorn]);
+					auto_buyUpTo(1, $item[Clancy\'s Crumhorn]);
 				}
 			}
 			if(auto_have_skill($skill[Summon Smithsness]) && (my_mp() > (3 * mp_cost($skill[Summon Smithsness]))))
@@ -911,7 +911,7 @@ void initializeDay(int day)
 
 			if(item_amount($item[handful of smithereens]) >= 2)
 			{
-				buyUpTo(2, $item[Ben-Gal&trade; Balm], 25);
+				auto_buyUpTo(2, $item[Ben-Gal&trade; Balm]);
 				cli_execute("make 2 louder than bomb");
 			}
 
@@ -1110,6 +1110,7 @@ boolean dailyEvents()
 	auto_LegacyOfLoathingDailies();
 	auto_buyFrom2002MrStore();
 	auto_useBlackMonolith();
+	auto_scepterSkills();
 	
 	return true;
 }
@@ -1174,7 +1175,7 @@ boolean Lsc_flyerSeals()
 		{
 			if((item_amount($item[imbued seal-blubber candle]) == 0) && guild_store_available())
 			{
-				buyUpTo(1, $item[seal-blubber candle]);
+				auto_buyUpTo(1, $item[seal-blubber candle]);
 				cli_execute("make imbued seal-blubber candle");
 			}
 			if(item_amount($item[Imbued Seal-Blubber Candle]) > 0)
@@ -1186,8 +1187,8 @@ boolean Lsc_flyerSeals()
 		}
 		else if(guild_store_available() && isHermitAvailable())
 		{
-			buyUpTo(1, $item[figurine of an armored seal]);
-			buyUpTo(10, $item[seal-blubber candle]);
+			auto_buyUpTo(1, $item[figurine of an armored seal]);
+			auto_buyUpTo(10, $item[seal-blubber candle]);
 			if((item_amount($item[Figurine of an Armored Seal]) > 0) && (item_amount($item[Seal-Blubber Candle]) >= 10))
 			{
 				handleSealNormal($item[Figurine of an Armored Seal]);
@@ -1198,7 +1199,7 @@ boolean Lsc_flyerSeals()
 		{
 			if((item_amount($item[Tenderizing Hammer]) == 0) && ((my_meat() >= (npc_price($item[Tenderizing Hammer]) * 2)) && (npc_price($item[Tenderizing Hammer]) != 0)))
 			{
-				buyUpTo(1, $item[Tenderizing Hammer]);
+				auto_buyUpTo(1, $item[Tenderizing Hammer]);
 			}
 			if(item_amount($item[Tenderizing Hammer]) > 0)
 			{
@@ -1662,7 +1663,7 @@ boolean doTasks()
 	if(my_familiar() == $familiar[Stooper] && pathAllowsChangingFamiliar())
 	{
 		auto_log_info("Avoiding stooper stupor...", "blue");
-		familiar fam = (is100FamRun() ? get_property("auto_100familiar").to_familiar() : $familiar[Mosquito]);
+		familiar fam = (is100FamRun() ? get_property("auto_100familiar").to_familiar() : findNonRockFamiliarInTerrarium());
 		use_familiar(fam);
 	}
 	if(my_inebriety() > inebriety_limit())
@@ -1764,9 +1765,6 @@ boolean doTasks()
 	auto_latteRefill();
 	auto_buyCrimboCommerceMallItem();
 	houseUpgrade();
-	getTerrarium();			//get a familiar terrarium if you do not have one yet so you can use familiars
-	acquireFamiliars();		//get useful and cheap familiars
-	hatchList();			//hatch familiars that are commonly dropped in run
 
 	//This just closets stuff so G-Lover does not mess with us.
 	if(LM_glover())						return true;
@@ -1783,6 +1781,7 @@ boolean doTasks()
 	auto_buyFireworksHat();
 	auto_CMCconsult();
 	auto_checkTrainSet();
+	prioritizeGoose();
 
 	ocrs_postCombatResolve();
 	beatenUpResolution();
@@ -1846,6 +1845,7 @@ boolean doTasks()
 	auto_voteSetup(0,0,0);
 	auto_setSongboom();
 	if(LX_ForceNC())					return true;
+	if(LX_dronesOut())					return true;
 	if(LM_bond())						return true;
 	if(LX_calculateTheUniverse(false))	return true;
 	rockGardenEnd();
@@ -1855,6 +1855,8 @@ boolean doTasks()
 	if(LA_wildfire())					return true;
 	if(LA_robot())						return true;
 	if(auto_autumnatonQuest())			return true;
+	if(auto_smallCampgroundGear())		return true;
+	auto_lostStomach(false);
 	
 	if (process_tasks()) return true;
 
@@ -1969,7 +1971,7 @@ void auto_begin()
 	if(my_familiar() == $familiar[Stooper] && pathAllowsChangingFamiliar())
 	{
 		auto_log_info("Avoiding stooper stupor...", "blue");
-		familiar fam = (is100FamRun() ? get_property("auto_100familiar").to_familiar() : $familiar[Mosquito]);
+		familiar fam = (is100FamRun() ? get_property("auto_100familiar").to_familiar() : findNonRockFamiliarInTerrarium());
 		use_familiar(fam);
 	}
 
@@ -2005,7 +2007,7 @@ void print_help_text()
 {
 	print_html("Thank you for using autoscend!");
 	print_html("If you need to configure or interrupt the script, choose <b>autoscend</b> from the drop-down \"run script\" menu in your browser.");
-	print_html("If you want to contribute, please open an issue <a href=\"https://github.com/Loathing-Associates-Scripting-Society/autoscend/issues\">on Github</a>");
+	print_html("If you want to contribute, please open an issue <a href=\"https://github.com/loathers/autoscend/issues\">on Github</a>");
 	print_html("A FAQ with common issues (and tips for a great bug report) <a href=\"https://docs.google.com/document/d/1AfyKDHSDl-fogGSeNXTwbC6A06BG-gTkXUAdUta9_Ns\">can be found here</a>");
 	print_html("The developers also hang around <a href=\"https://discord.gg/96xZxv3\">on the Ascension Speed Society discord server</a>");
 	print_html("");
@@ -2013,7 +2015,7 @@ void print_help_text()
 
 void sad_times()
 {
-	print_html('autoscend (formerly sl_ascend) is under new management. Soolar (the maintainer of sl_ascend) and Jeparo (the most active contributor) have decided to cease development of sl_ascend in response to Jick\'s behavior that has recently <a href="https://www.reddit.com/r/kol/comments/d0cq9s/allegations_of_misconduct_by_asymmetric_members/">come to light</a>. New developers have taken over maintenance and rebranded sl_ascend to autoscend as per Soolar\'s request. Please be patient with us during this transition period. Please see the readme on the <a href="https://github.com/Loathing-Associates-Scripting-Society/autoscend">github</a> page for more information.');
+	print_html('autoscend (formerly sl_ascend) is under new management. Soolar (the maintainer of sl_ascend) and Jeparo (the most active contributor) have decided to cease development of sl_ascend in response to Jick\'s behavior that has recently <a href="https://www.reddit.com/r/kol/comments/d0cq9s/allegations_of_misconduct_by_asymmetric_members/">come to light</a>. New developers have taken over maintenance and rebranded sl_ascend to autoscend as per Soolar\'s request. Please be patient with us during this transition period. Please see the readme on the <a href="https://github.com/loathers/autoscend">github</a> page for more information.');
 }
 
 void safe_preference_reset_wrapper(int level)
